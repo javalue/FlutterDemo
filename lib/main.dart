@@ -30,6 +30,9 @@ class RandomWordsState extends State<RandomWords> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Startup Name Generator'),
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved)
+        ],
       ),
       body: _buildSuggestions(),
     );
@@ -47,6 +50,20 @@ class RandomWordsState extends State<RandomWords> {
         }
         return _buildRow(_suggestions[index]);
       },
+    );
+  }
+
+  Widget _buildLikedList() {
+    var data = _saved.toList();
+    return new ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        //是否是奇数
+//        if (i.isOdd) return new Divider();
+
+        return _buildRow(data[i]);
+      },
+      itemCount: data.length,
     );
   }
 
@@ -72,6 +89,18 @@ class RandomWordsState extends State<RandomWords> {
           },
         );
       },
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (context) {
+          return new Scaffold(
+              appBar: new AppBar(title: new Text("liked")),
+              body: _buildLikedList());
+        },
+      ),
     );
   }
 }
